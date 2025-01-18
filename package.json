@@ -1,0 +1,22 @@
+{
+    "name": "hello-world",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "I am making hello World using express",
+    "engines": {
+        "node": "20.x.x"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js",
+        "dev": "node --watch server.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.21.2",
+        "mongoose": "^8.9.5",
+        "react-hot-toast": "^2.5.1"
+    }
+}
