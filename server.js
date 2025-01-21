@@ -8,7 +8,7 @@ import { Todo } from "./models/index.js";
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://newtodo-usingbackend.surge.sh"],
+    origin: ["http://localhost:5173", "https://todo-with-mongodb.surge.sh/"],
     allowedHeaders: ["Content-Type"],
   })
 );

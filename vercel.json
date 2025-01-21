@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "hello-world",
+    "name": "Todo-app",
     "builds": [
         {
             "src": "server.js",
