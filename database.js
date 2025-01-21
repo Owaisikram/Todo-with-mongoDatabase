@@ -1,19 +1,16 @@
 import mongoose from "mongoose";
-
-const mongodbUri =
-  "mongodb+srv://owaisikram-admin:9MKQNYUG2JL7VmEo@cluster0.rg1fa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
+  
 const connectDB = async () => {
   try {
     const connectionInstance = await mongoose.connect(mongodbUri, {
-      dbName: "My-todo-db",
+      dbName: "todo-new",
     });
 
     console.log(`\n🌿 MongoDB connected ! 🍃\n`);
 
     mongoose.connection.on(
       "error",
-      console.error.bind(console, "Connection error:")
+      console.error.bind(console, "Connection error:"),
     );
 
     process.on("SIGINT", () => {
@@ -29,14 +26,5 @@ const connectDB = async () => {
   }
 };
 
-try {
-    await connectDB();
 
-    //       app.listen(PORT, () =>
-    //         console.log(`⚙️  Server running at port ==>> ${PORT}`),
-    //       );
-
-    //       app.on("error", (err) => console.log("🚀 ~ main file:", err));
-} catch (err) {
-    console.log("🚀 ~ main file ~ err:", err);
-}
+connectDB();

@@ -1,8 +1,8 @@
 import express from "express";
 const app = express();
-const port = process.env.PORT || 5000;
-import cors from "cors";
 import "./database.js";
+const port = process.env.PORT || 5001;
+import cors from "cors";
 import { Todo } from "./models/index.js";
 
 app.use(express.json());
@@ -20,33 +20,31 @@ app.get("/api/v1/todos", async (req, res) => {
   res.send({ data: todos, message: message });
 });
 
-//yaha ek todo milega
+// yaha ek todo milega
 app.post("/api/v1/todo", async (req, res) => {
-  const obj = {
-    todoContent: req.body.todo,
-    ip: req.ip,
-  };
-  // const createdTodo = await Todo.create(obj);
-  console.log("resp", obj);
-
-  res.send({ message: "Todo added successfully", data: obj });
+  try {
+    const obj = {
+      todoContent: req.body.todo,
+      ip: req.ip,
+    };
+    const response = await Todo.create(obj);
+    console.log("response", response);
+    res.send({ message: "Todo added successfully", data: obj });
+  } catch (error) {
+    console.log("error", error);
+  }
 });
 
 //yaha ek todo update hoga
-app.patch("/api/v1/todo/:id", (req, res) => {
+app.patch("/api/v1/todo/:id", async (req, res) => {
   const id = req.params.id; //id of todo to be updated
+  const result = await Todo.findByIdAndUpdate(id, {
+    todoContent: req.body.todoContent,
+  });
 
-  let isFound = false; //flag to check if todo is found or not
-  for (let i = 0; i < todos.length; i++) {
-    if (todos[i].id === id) {
-      //specific todo here..!
-      todos[i].todoContent = req.body.todoContent;
-      isFound = true;
-      break;
-    }
-  }
-
-  if (isFound) {
+  console.log("result=>", result);  
+  
+  if (result) {
     res.status(201).send({
       data: { todoContent: req.body.todoContent, id: id },
       message: "todo updated successfully!",
@@ -58,22 +56,10 @@ app.patch("/api/v1/todo/:id", (req, res) => {
 
 //yaha ek todo delete hoga
 
-app.delete("/api/v1/todo/:id", (req, res) => {
+app.delete("/api/v1/todo/:id", async  (req, res) => {
   const id = req.params.id;
-
-  let isFound = false;
-  for (let i = 0; i < todos.length; i++) {
-    if (todos[i].id === id) {
-      //specific todo here.. have to delete it now from todos
-
-      todos.splice(i, 1); //delete 1 element from index i
-
-      isFound = true;
-      break;
-    }
-  }
-
-  if (isFound) {
+  const result = await Todo.findByIdAndDelete(id);
+  if (result) {
     res.status(201).send({
       message: "todo deleted successfully!",
     });
