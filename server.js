@@ -42,8 +42,8 @@ app.patch("/api/v1/todo/:id", async (req, res) => {
     todoContent: req.body.todoContent,
   });
 
-  console.log("result=>", result);  
-  
+  console.log("result=>", result);
+
   if (result) {
     res.status(201).send({
       data: { todoContent: req.body.todoContent, id: id },
@@ -56,7 +56,7 @@ app.patch("/api/v1/todo/:id", async (req, res) => {
 
 //yaha ek todo delete hoga
 
-app.delete("/api/v1/todo/:id", async  (req, res) => {
+app.delete("/api/v1/todo/:id", async (req, res) => {
   const id = req.params.id;
   const result = await Todo.findByIdAndDelete(id);
   if (result) {

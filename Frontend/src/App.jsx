@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function App() {
-  const BASEE_URL = "https://new-todo-usingbackend.vercel.app";
+  const BASE_URL = "http://localhost:5001";
 
   const [todos, setTodos] = useState([]);
 
   const getTodo = async () => {
     try {
-      const res = await axios(`${BASEE_URL}/api/v1/todos`);
+      const res = await axios(`${BASE_URL}/api/v1/todos`);
       const todosFromServer = res?.data?.data;
       setTodos(todosFromServer);
     } catch (err) {
@@ -26,7 +26,7 @@ export default function App() {
     const todoValue = event.target.children[0].value;
 
     try {
-      await axios.post(`${BASEE_URL}/api/v1/todo`, {
+      await axios.post(`${BASE_URL}/api/v1/todo`, {
         todo: todoValue,
       });
       getTodo();
@@ -38,7 +38,7 @@ export default function App() {
 
   const deleteTodo = async (todoId) => {
     try {
-      const res = await axios.delete(`${BASEE_URL}/api/v1/todo/${todoId}`);
+      const res = await axios.delete(`${BASE_URL}/api/v1/todo/${todoId}`);
       console.log("response", res);
 
       toast.success(res?.message || "Todo deleted successfully");
@@ -49,11 +49,13 @@ export default function App() {
 
   const editTodo = async (event, todoId) => {
     event.preventDefault();
+    console.log("todoId", todoId);
+    
 
     const todoValue = event.target.children[0].value;
 
     try {
-      await axios.patch(`${BASEE_URL}/api/v1/todo/${todoId}`, {
+      await axios.patch(`${BASE_URL}/api/v1/todo/${todoId}`, {
         todoContent: todoValue,
       });
       
@@ -100,7 +102,7 @@ export default function App() {
                 <span className="text-gray-700">{todo.todoContent}</span>
               ) : (
                 <form
-                  onSubmit={(e) => editTodo(e, todo.id)}
+                  onSubmit={(e) => editTodo(e, todo._id)}
                   className="flex items-center gap-2"
                 >
                   <input
@@ -152,7 +154,7 @@ export default function App() {
                 )}
                 {!todo.isEditing ? (
                   <button
-                    onClick={() => deleteTodo(todo.id)}
+                    onClick={() => deleteTodo(todo._id)}
                     className="text-red-600 hover:text-red-700 focus:outline-none"
                   >
                     Delete
